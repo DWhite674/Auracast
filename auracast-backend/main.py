@@ -5,23 +5,22 @@ from pydantic import BaseModel
 import httpx
 
 
-app = FastAPI(title="AuraCast API")
-
-# Configure CORS settings
-origins = [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://auracast-migrane.vercel.app",
-]
+app = FastAPI()
 
 
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins_regex=r"https://.*\.vercel\.app",
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+
+@app.get("/")
+def read_root():
+    return {"status": "ok", "message": "Auracast API is running"}
+
 
 # Pydantic Schemas for type safety and OpenAPI docs
 class Location(BaseModel):
